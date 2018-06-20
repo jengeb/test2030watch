@@ -1,11 +1,12 @@
-const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
-  router: {
-    base: 'test2030watch'
-  }
-} : {}
+// const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
+//   router: {
+//     // base: '/2030watch'
+//     base: ''
+//   }
+// } : {}
 
 module.exports = {
-  ...routerBase,
+  // ...routerBase,
   /*
   ** Headers of the page
   */
@@ -32,7 +33,9 @@ module.exports = {
       const indicators = Object.keys(JSON.parse(require('fs').readFileSync('data/indicators.json', 'utf8'))).map((data) => {
         return '/indicator/' + data
       })
-      const sdgs = Object.keys(JSON.parse(require('fs').readFileSync('data/sdgs.json', 'utf8')))
+      const sdgs = Object.keys(JSON.parse(require('fs').readFileSync('data/sdgs.json', 'utf8'))).map((data) => {
+        return '/sdg/' + data
+      })
       return [...indicators, ...sdgs]
     }
   },
