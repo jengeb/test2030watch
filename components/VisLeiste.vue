@@ -2,7 +2,7 @@
   <ul class="sdg-leiste">
     <li
       v-for="(sdg, slug) in sdgs"
-      :class="{ 'sdg-item': true, 'current': current === slug }"
+      :class="{ 'sdg-band-item': true, 'current': current === slug }"
       :style="{ 'background-color': '#' + sdg.color }"
       :key="slug">
       <nuxt-link :to="'/sdg/' + slug" class="sdg-link">SDG {{ sdg.number }}&#8239;&mdash;&#8239;{{ sdg.labelShort }}</nuxt-link>
@@ -31,7 +31,7 @@
     transition-duration: 2s; // Duration for size change
   }
 
-  .sdg-item {
+  .sdg-band-item {
     flex: 1;
     transition-duration: 1s;
     overflow: hidden;
@@ -63,4 +63,3 @@
     }
   }
 </style>
-
