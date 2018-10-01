@@ -12,12 +12,8 @@ branches:
 
 install:
   - npm install
-
-script:
   - node data/load-data.js
   - mv indiNav.json sdgs.json indicators.json ./data/
-
-install:
   - npm run generate:gh-pages
 
 deploy:
