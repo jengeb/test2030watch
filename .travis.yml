@@ -11,7 +11,7 @@ branches:
   - master
 
 install:
-  - npm install
+  - npm ci
   - node data/load-data.js
   - mv indiNav.json sdgs.json indicators.json ./data/
   - npm run generate:gh-pages
