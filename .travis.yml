@@ -16,6 +16,9 @@ install:
 
 script:
   - echo "Skipping tests"
+  - node data/load-data.js
+  - ls -a
+  - mv indiNav.json sdgs.json indicators.json ./data/
 
 deploy:
   provider: pages
