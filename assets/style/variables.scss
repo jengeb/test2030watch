@@ -1,21 +1,25 @@
-$font-family-default: 'Chivo', "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", Helvetica, sans-serif !default;
-$font-family-modern: 'Roboto Mono', 'Lucida Console', Monaco, monospace;
+$font-family-default: 'Roboto', "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", Helvetica, sans-serif !default;
 $font-weight: 400 !default;
 $font-weight-bold: 700 !default;
 $base-line-height: 1.7 !default;
 
 $spacing:     2rem !default;
 
-$color-default:     #222 !default;
-$color-accent:      #04A6F0 !default;
+$color-default:     #023753 !default;
+$color-accent:      #6599FF !default;
 $color-mute:        #a5a49f !default;
 $color-light:       #f2f2f2 !default;
 $color-white:       #ffffff !default;
 
-$color-border-mute:        rgba(0, 0, 0, .2) !default;
+$color-border-mute: rgba(0, 0, 0, .2) !default;
 
-$color-dns:       #F1B31C;
-$color-okf:       #04A6F0;
+$color-dns:         #F1B31C;
+$color-okf:         #6599FF;
+$color-landingpage: #023753;
+$color-attention:   #e65100;
+$color-2030:        #023753;
+
+$darker: 7%;
 
 // Use media queries like this:
 // @include media-query($on-palm) {

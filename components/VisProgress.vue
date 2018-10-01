@@ -10,20 +10,16 @@
       <g v-if="vTickLabels" class="tickLabels">
         <text
           class="sdg-label sdg-label-tick"
-          alignment-baseline="hanging"
-          dominant-baseline="hanging"
           text-anchor="start"
           :x="scaleX.map(0) + 'px'"
-          y="0"
-          v-html="format(0)" />
+          y="10"
+        >0%</text>
         <text
           class="sdg-label sdg-label-tick"
-          alignment-baseline="hanging"
-          dominant-baseline="hanging"
           text-anchor="end"
           :x="scaleX.map(100) + 'px'"
-          y="0"
-          v-html="format(100)" />
+          y="10"
+        >100%</text>
       </g>
       <g class="tickLines" v-if="vTicks">
         <line
@@ -33,87 +29,61 @@
           :x1="scaleX.map(tick) + 'px'"
           :y1="height / 2 - 5 + 'px'"
           :x2="scaleX.map(tick) + 'px'"
-          :y2="height / 2 + 5 + 'px'" />
+          :y2="height / 2 + 5 + 'px'"
+        />
+      </g>
+      <g class="tickLines" v-if="vSimpleTicks">
+        <line
+          v-for="tick in [0, 100]"
+          class="tick"
+          stroke-linecap="round"
+          :x1="scaleX.map(tick) + 'px'"
+          :y1="height / 2 - 5 + 'px'"
+          :x2="scaleX.map(tick) + 'px'"
+          :y2="height / 2 + 5 + 'px'"
+        />
+        <text font-size="12px" fill="#aaa" :x="scaleX.map(0) + 'px'" y="70%">0%</text>
+        <text font-size="12px" fill="#aaa" :x="scaleX.map(93) + 'px'" y="70%">100%</text>
       </g>
     </g>
     <line
       class="diff"
       stroke="#aaa"
       :x1="xOKF"
-      y1="50%"
+      :y1="height / 2 + 'px'"
       :x2="xDNS"
-      y2="50%" />
+      :y2="height / 2 + 'px'" />
     <circle
-      class="sdg-marker sdg-marker-total"
+      :class="{ 'sdg-marker': true, 'sdg-marker-total': true, 'disabled': disabled }"
       :style="{ 'stroke': cBackground }"
       :cx="xOKF"
-      cy="50%"
+      :cy="height / 2 + 'px'"
       :r="markerR" />
     <circle
-      class="sdg-marker sdg-marker-dns"
+      :class="{ 'sdg-marker': true, 'sdg-marker-dns': true, 'disabled': disabled }"
       :style="{ 'stroke': cBackground }"
       :cx="xDNS"
-      cy="50%"
+      :cy="height / 2 + 'px'"
       :r="markerR" />
     <g :class="{ markerLabels: true, invisible: vMarkerLabels }">
       <text
         ref="okf"
         :class="{ 'sdg-label': true, 'sdg-label-total': true, 'invert': invert }"
-        alignment-baseline="hanging"
-        dominant-baseline="hanging"
         :text-anchor="labels[0].l"
-        :style="{ 'font-size': compact ? '0.8rem' : '1.2rem' }"
+        :style="{ 'font-size': compact ? '0.8rem' : '1.1rem' }"
         :x="labels[0].x"
-        y="0%"
-        v-html="(vMarkerLabelsNames ? '2030Watch: ' : '') + format(okf)" />
+        y="20%"
+      >{{ okfValue }}</text>
       <text
         ref="dns"
         :class="{ 'sdg-label': true, 'sdg-label-dns': true, 'invert': invert }"
-        alignment-baseline="baseline"
-        dominant-baseline="baseline"
         :text-anchor="labels[1].l"
-        :style="{ 'font-size': compact ? '0.8rem' : '1.2rem' }"
+        :style="{ 'font-size': compact ? '0.8rem' : '1.1rem' }"
         :x="labels[1].x"
-        y="100%"
-        v-html="(vMarkerLabelsNames ? 'DNS: ' : '') + format(dns)" />
+        y="95%"
+      >{{ dnsValue }}</text>
     </g>
     <g v-if="vLegend">
-      <g class="tickLinesLegend" v-if="vTicks">
-        <text
-          class="ticksLegendLabels"
-          alignment-baseline="hanging"
-          dominant-baseline="hanging"
-          text-anchor="start"
-          :style="{ fill: stepsColors[0] }"
-          :x="scaleX.map(0) + 'px'"
-          y="0%"
-          v-html="format(0)" />
-        <text
-          class="ticksLegendLabels"
-          alignment-baseline="hanging"
-          dominant-baseline="hanging"
-          text-anchor="middle"
-          :style="{ fill: '#a5a49f' }"
-          :x="scaleX.map(50) + 'px'"
-          y="0%">Nachhaltigkeit</text>
-        <text
-          class="ticksLegendLabels"
-          alignment-baseline="hanging"
-          dominant-baseline="hanging"
-          text-anchor="end"
-          :style="{ fill: stepsColors[steps - 1] }"
-          :x="scaleX.map(100) + 'px'"
-          y="0%"
-          v-html="format(100)" />
-        <line
-          v-for="tick in steps"
-          class="tickLegend"
-          :style="{ 'stroke': stepsColors[tick - 1] }"
-          :x1="scaleX.map((tick - 1) * (100 / steps)) + 'px'"
-          :y1="legendLabeldnsHeight"
-          :x2="scaleX.map((tick) * (100 / steps)) + 'px'"
-          :y2="legendLabeldnsHeight" />
-      </g>
       <polyline
         class="legendLine"
         :points="`${xOKF},${height - legendLabeldnsHeight} ${xOKF},${height - legendLabeldnsHeight - legendLabelSteps * 2}`" />
@@ -123,19 +93,15 @@
       <text
         ref="okfLabelLegend"
         class="legendLabel okf"
-        alignment-baseline="hanging"
-        dominant-baseline="hanging"
         text-anchor="middle"
         :x="xOKF"
-        :y="height - 15">2030Watch</text>
+        :y="height">2030Watch</text>
       <text
         ref="dnsLabelLegend"
         class="legendLabel dns"
-        alignment-baseline="hanging"
-        dominant-baseline="hanging"
         text-anchor="middle"
         :x="xDNS"
-        :y="height - 15">Daten DNS</text>
+        :y="height">Daten DNS</text>
     </g>
   </svg>
 </template>
@@ -181,7 +147,15 @@
       },
       vTicks: { // display ticks
         type: Boolean,
-        default: true
+        default: false
+      },
+      vSimpleTicks: { // display ticks for 0 and 100 %
+        type: Boolean,
+        default: false
+      },
+      disabled: {
+        type: Boolean,
+        required: false
       }
     },
     data: function () {
@@ -198,12 +172,16 @@
         legendLabeldnsHeight: 20,
         legendLabelSteps: 0,
         legendLabelDistance: 3,
-        scaleX: new Scale().domain([0, 100]).range([0, 0])
+        scaleX: new Scale().domain([0, 100]).range([0, 0]),
+        okfValue: undefined,
+        dnsValue: undefined
       }
     },
     mounted: function () {
       this.calcSizes()
       window.addEventListener('resize', this.calcSizes, false)
+      this.okfValue = (this.vMarkerLabelsNames ? '2030Watch: ' : '') + format(this.okf, 0, '%', true)
+      this.dnsValue = (this.vMarkerLabelsNames ? 'Offiziell: ' : '') + format(this.dns, 0, '%', true)
     },
     methods: {
       format: format,
@@ -213,7 +191,7 @@
       calcSizes: function () {
         this.width = (this.$refs.vis.clientWidth || this.$refs.vis.parentNode.clientWidth) - this.markerR
         this.scaleX.range([this.markerR, this.width])
-        this.height = this.$refs.vis.clientHeight || this.$refs.vis.parentNode.clientHeight
+        this.height = this.$refs.vis.getBoundingClientRect().height || this.$refs.vis.parentNode.getBoundingClientRect().height
         if (typeof this.$refs.okfLabelLegend !== 'undefined') {
           this.legendLabelokfWidth = this.$refs.okfLabelLegend.clientWidth
           this.legendLabeldnsWidth = this.$refs.dnsLabelLegend.clientWidth
@@ -253,8 +231,9 @@
         if (!this.width) {
           return [{ 'x': 0 + 'px', 'l': 'start' }, { 'x': 0 + 'px', 'l': 'start' }]
         }
-        const { markerR } = this
-        const distance = markerR / 2
+        // const { markerR } = this
+        // const distance = markerR / 2
+        const distance = 0
         let dns = this.xDNS
         let okf = this.xOKF
 
@@ -379,6 +358,10 @@
       &.sdg-marker-dns {
         fill: $color-dns;
       }
+
+      &.disabled {
+        fill: $color-mute;
+      }
     }
 
     .markerLabels.invisible {
@@ -391,9 +374,9 @@
       transition-duration: 0.2s;
 
       &.sdg-label-tick {
-        fill: #222;
+        fill: #aaa;
         opacity: 1;
-        font-size: 0.7rem;
+        font-size: 0.8rem;
       }
 
       &.sdg-label-total {

@@ -4,33 +4,37 @@
       <div class="wrapper">
         <div class="message">
           <h1>Wie nachhaltig ist Deutschland?</h1>
-          <p>Der Zustand der Welt erfordert eine Transformation zu mehr Gerechtig&shy;keit und Nachhaltiger Entwicklung. Mit der Agenda 2030 haben sich alle UN-Staaten verpflichtet, für die Realisierung dieser Trans&shy;formation siebzehn Nachhaltig&shy;keitsziele - den sogenannten „Sustainable Development Goals (SDGs)“- bis zum Jahr 2030 umzusetzen. Der damit verbundene globale Indikatoren&shy;katalog dient zur Fortschritts&shy;messung.</p>
-          <p>2030Watch diskutiert wie ambitioniert Deutschland die SDGs umsetzt</p>
+          <p style="margin-bottom:1.5rem;">
+            Mit der Agenda 2030 haben sich alle UN-Staaten verpflichtet, 17 Nachhaltigkeitsziele – die sogenannten "Sustainable Development Goals (SDGs)"
+            – bis zum Jahr 2030 umzusetzen. 2030Watch diskutiert anhand von Indikatoren wie ambitioniert Deutschland die SDGs umsetzt.
+          </p>
+          <p>
+            <div class="blockquote-wrapper">
+              <blockquote cite="https://www.2030agenda.de/de/article/peer-review-2018" class="large-quote">
+                <p style="font-size:1.3rem;margin-bottom:1rem;">
+                  Allerdings ist noch viel zu tun, um einen erfolgreichen deutschen Weg hin zur Nachhaltigkeit zu gestalten.
+                </p>
+                <cite>– Peer Review zur Deutschen Nachhaltigkeitsstrategie 2018</cite>
+              </blockquote>
+            </div>
+          </p>
         </div>
       </div>
     </header>
-    <section class="intro-container">
-      <div class="wrapper">
-        <Slideshow />
-      </div>
-    </section>
+    <VisLeiste class="padding-visleiste" :current="false" />
     <section>
-      <div class="wrapper">
-        <h2>So nachhaltig ist Deutschland – Das sagen offizielle und komplementäre Daten</h2>
-        <div class="columns columns-gutter">
-          <!-- <section>
-            <p>2030Watch stellt dem <span class="dns">offiziellen Indikatorenkatalog</span> der Bundesregierung einen <span class="okf">erweiterten Indikatorenkatalog</span> entgegen, welcher den Fortschritt in Richtung Nachhaltigkeit misst. Die folgende Visualisierung vergleicht den bisher erreichten Fortschritt anhand beider Indikatorensets auf einer Skala von 0% (sehr geringe Nachhaltigkeit) bis 100% (sehr hohe Nachhaltigkeit).</p>
-          </section> -->
-          <!-- <section class="legendProgress">
-            <VisProgress :sdg="sampleSDG" :vLegend="true" :compact="false" />
-          </section> -->
+      <div id="keyfindings" class="wrapper">
+        <div>
+          <h2 class="inline-h2">
+            Ein nachhaltigeres Deutschland in 2030 - Wie nah sind wir dem Ziel?
+          </h2>
+          <h3 class="inline-h3">
+            <span class="dns">Offizielle</span> Indikatoren der Deutschen Nachhaltigkeitsstrategie
+            und <span class="okf">2030Watch</span> Indikatoren zum Handlungsbedarf für deutsche
+            Nachhaltigkeit. <em>Go Explore!</em>
+          </h3>
         </div>
         <VisListe />
-      </div>
-    </section>
-    <section>
-      <div class="wrapper">
-        <KeyFindings />
       </div>
     </section>
   </div>
@@ -38,9 +42,7 @@
 
 <script>
   import VisListe from '~/components/VisListe.vue'
-  import Slideshow from '~/components/Slideshow.vue'
-  import KeyFindings from '~/components/KeyFindings.vue'
-  import VisProgress from '~/components/VisProgress.vue'
+  import VisLeiste from '~/components/VisLeiste.vue'
 
   export default {
     data: function () {
@@ -55,45 +57,90 @@
     },
     components: {
       VisListe,
-      Slideshow,
-      KeyFindings,
-      VisProgress
+      VisLeiste
     }
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import "~@/assets/style/variables";
 
   .inpage-header {
-    padding: 10vh 0 3vh 0;
+    padding: 7vh 0 7vh 0;
+  }
+
+  .padding-visleiste {
+    padding-top: 0;
+    margin-bottom: 2rem;
+  }
+
+  blockquote {
+    quotes: "”" "“";
+    position: relative;
+    p {
+      font-weight: bold;
+    }
+  }
+
+  blockquote:before {
+    font-size: 11rem;;
+    line-height: 0.85;
+    left: 0;
+    content: open-quote;
+    font-family: serif;
+    position: absolute;
+    font-weight: bold;
+    color: #BBDEFB;
+  }
+
+  .large-quote {
+    padding-left: 110px;
+  }
+
+  cite:before {
+    content: no-close-quote;
+  }
+
+  .blockquote-wrapper {
+    max-width: 50vw;
+    margin: 0 auto;
+    position: relative;
+  }
+
+  .inline-h2 {
+    display: inline;
+  }
+
+  .inline-h3 {
+    display: inline;
+    font-size: 1.6rem;
+    font-weight: normal;
+    line-height: 1.6;
+  }
+
+  h1 {
     color: #fff;
-
-    .message {
-      width: 100%;
-      // max-width: 800px;
-
-      @include media-query($on-desktop) {
-        & {
-          width: 100%;
-        }
-      }
-
-      p {
-        font-size: 1.1rem;
-      }
-    }
   }
 
-  .legendProgress {
-    height: 7rem;
-
-    svg {
-      width: 100%;
-    }
+  .dns {
+    font-weight: bold;
   }
 
-  .intro-container {
-    background: linear-gradient(0deg, transparent 50%, $color-okf 50%);
+  .okf {
+    font-weight: bold;
+  }
+
+  @media screen and (max-width: $on-palm) {
+    .blockquote-wrapper {
+      max-width: 100vw;
+    }
+
+    blockquote:before {
+      font-size: 8rem;
+    }
+
+    .large-quote {
+      padding-left: 70px;
+    }
   }
 </style>

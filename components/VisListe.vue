@@ -1,41 +1,39 @@
 <template>
   <ul class="vis-liste">
-    <li class="sdg-item">
+    <li class="sdg-item" style="margin:0;">
       <div class="sdg-header sdg-header-label">
-        <span>Sustainable Development Goals</span>
+        <span class="sdg-header-sdgs sdg-header-sdgs-desktop">Sustainable Development Goals</span>
+        <span class="sdg-header-sdgs sdg-header-sdgs-mobile">SDGs</span>
       </div>
-      <div class="sdg-header sdg-header-vis columns">
-        <section class="sdg-legend">
-          <span class="dns">DNS</span>
-          <span class="okf">2030Watch</span>
+      <div class="sdg-header sdg-header-vis sdg-header-vis-mobile columns">
+        <section class="sdg-header-sdgs">
+          SDG-Ziel für 2030 erreicht zu:
         </section>
       </div>
     </li>
-    <li v-for="(sdg, index) in sdgListe" class="sdg-item">
-      <nuxt-link :to="'sdg/' + sdg.slug" class="sdg-link" :style=" { '--color': '#' + sdg.color }">
-        <div class="sdg-label">
-          <span class="sdg-number">{{ sdg.number }}</span> <span class="sdg-text" :title="sdg.labelLong">{{ sdg.labelShort }}</span>
-        </div>
-        <div class="sdg-vis">
-          <VisProgress :sdg="sdg" :vTickLabels="index === 0" />
-        </div>
-      </nuxt-link>
+    <li class="sdg-item" style="margin:0;">
+      <div class="sdg-header sdg-header-label"></div>
+      <div class="sdg-header sdg-header-vis columns" style="font-size:1rem;">
+        <section class="sdg-legend">
+          <span class="okf">2030Watch</span>
+          <span class="dns-lang">Offizielle Nachhaltigkeitsstrategie</span>
+          <span class="dns-kurz">Offiziell</span>
+        </section>
+      </div>
     </li>
+    <ToggleElements :sdgs="sdgListe" />
   </ul>
 </template>
 
 <script>
   import { mapState } from 'vuex'
-  import VisProgress from '~/components/VisProgress.vue'
-  import SortIcon from '~/components/SortIcon.vue'
-  import VisDirection from '~/components/VisDirection.vue'
+  import ToggleElements from '~/components/ToggleElements.vue'
   import _ from 'lodash'
 
   export default {
     data: function () {
       return {
-        'sorting': 'number',
-        'reverse': false
+        'sorting': 'number'
       }
     },
     computed: {
@@ -43,37 +41,22 @@
         'sdgs'
       ]),
       sdgListe: function () {
-        const list = _.sortBy(this.sdgs, this.sorting)
-        if (this.reverse) {
-          return _.reverse(list)
-        } else {
-          return list
-        }
+        return _.sortBy(this.sdgs, this.sorting)
       }
     },
     components: {
-      VisProgress,
-      SortIcon,
-      VisDirection
+      ToggleElements
     },
-    methods: {
-      sort: function (key) {
-        if (this.sorting !== key) {
-          this.sorting = key
-          this.reverse = false
-        } else {
-          this.reverse = !this.reverse
-        }
-      }
-    }
+    methods: {}
   }
 </script>
 
 <style lang="scss">
+  // TODO not yet scoped: ToggleElements component references this classes
   @import '~@/assets/style/variables';
 
   .vis-liste {
-    margin: $spacing 0;
+    margin: $spacing * 1.5 0;
 
     &:hover {
       .sdg-item:not(:hover) {
@@ -86,56 +69,37 @@
 
   .sdg-item {
     display: flex;
-
-    &:first-child {
-      pointer-events: none;
-    }
+    margin-bottom: 1.3rem;
 
     .sdg-header {
       margin-bottom: $spacing / 2;
-    }
-
-    .sdg-header-label {
-      margin-left: calc(1rem + 16px);
+      font-size: 1.2rem;
     }
 
     .sdg-header-label, .sdg-header-vis {
       flex: 1;
-      color: #9B9B9A;
 
       .active {
         font-weight: bold;
         color: $color-default;
       }
-
-      .sdg-legend {
-        text-align: right;
-
-        span {
-          margin-left: 10px;
-        }
-
-        .dns {
-          color: $color-dns;
-        }
-
-        .okf {
-          color: $color-okf;
-        }
-      }
     }
 
     .sdg-link {
-      color: #222;
+      color: var(--color);
       display: flex;
       flex-direction: column;
-      // height: 5rem;
       width: 100%;
       margin: 0;
 
       .sdg-vis {
         margin: $spacing / 6 0 $spacing;
         height: 50px;
+      }
+
+      &.disabled {
+        cursor: default;
+        color: $color-mute;
       }
 
       @include media-query($on-desktop) {
@@ -147,7 +111,6 @@
 
           .sdg-vis {
             margin: 0;
-            height: 100%;
           }
         }
       }
@@ -160,19 +123,18 @@
 
         .sdg-number {
           width: 1rem;
-          margin-right: 1rem;
-          text-align: right;
-          line-height: 1.2rem;
+          margin-right: 0.9rem;
+          line-height: 1.35rem;
           display: inline-block;
-          color: $color-mute;
-          font-size: 0.8rem;
+          color: var(--color);
+          font-size: 1.2rem;
         }
 
         .sdg-text {
-          line-height: 1.2rem;
+          line-height: 1.35rem;
           display: inline-block;
           font-weight: bold;
-          font-size: 0.9rem;
+          font-size: 1.2rem;
         }
       }
 
@@ -184,7 +146,7 @@
         flex: 1;
       }
 
-      &:hover {
+      &:hover:not(.disabled) {
         .sdg-label {
           opacity: 1 !important;
           color: var(--color);
@@ -196,4 +158,53 @@
       }
     }
   }
+
+  @media (max-width: 960px) {
+    .dns-lang {
+      display:none;
+    }
+    .dns-kurz {
+      color: $color-dns;
+    }
+  }
+  @media (min-width: 961px) {
+    .dns-lang {
+      color: $color-dns;
+    }
+    .dns-kurz {
+      display: none;
+    }
+  }
+
+  .sdg-legend {
+    text-align: right;
+    span {
+      margin-left: 10px;
+    }
+  }
+
+  .sdg-header-sdgs {
+    font-weight: bold;
+    color: $color-2030;
+  }
+
+  .sdg-header-sdgs-mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: $on-palm) {
+    .sdg-header-sdgs-desktop {
+      display: none;
+    }
+
+    .sdg-header-vis-mobile {
+      flex: 3 !important;
+      text-align: right;
+    }
+
+    .sdg-header-sdgs-mobile {
+      display: inline;
+    }
+  }
+
 </style>

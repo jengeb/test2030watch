@@ -18,13 +18,15 @@
           v-html="tick[0]" />
         <rect
           v-for="(bar, n) in bars"
-          :title="bar.label + ': ' + bar.value"
+          v-if="bar.height >= 0"
           :class="bar.klass"
           :x="bar.x + 'px'"
           :width="bar.width + 'px'"
           :y="bar.y + 'px'"
           :height="bar.height + 'px'"
-          />
+        >
+          <title>{{ bar.label + ': ' + bar.value }}</title>
+        </rect>
         <line
           :x1="labelX + 'px'"
           x2="100%"
@@ -33,9 +35,8 @@
           class="base" />
         <text
           v-for="(bar, n) in bars"
-          alignment-baseline="middle"
           :x="bar.labelX + 'px'"
-          :transform="'rotate(45,' + bar.labelX + ',' + bar.labelY + ')'"
+          :transform="'rotate(90,' + bar.labelX + ',' + bar.labelY + ')'"
           :y="bar.labelY"
           v-html="bar.label"
           />
@@ -88,7 +89,7 @@
       calcSizes: function () {
         const { margin } = this
         this.width = this.$refs.vis.clientWidth || this.$refs.vis.parentNode.clientWidth
-        this.height = this.$refs.vis.clientHeight || this.$refs.vis.parentNode.clientHeight
+        this.height = this.$refs.vis.getBoundingClientRect().height || this.$refs.vis.parentNode.getBoundingClientRect().height
         this.labelX = Math.min(Math.max(this.width * 0.1, 20), 70) + 5
         this.gutter = Math.min(Math.max(this.width * 0.01, 5), 10)
         this.widthBar = (this.width - this.labelX - (this.gutter * (this.values.length + 1))) / this.values.length
@@ -138,7 +139,7 @@
     }
 
     text {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
   }
 
@@ -177,7 +178,7 @@
     text-align: left;
     overflow: hidden;
     white-space: nowrap;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
 
   .label {

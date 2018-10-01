@@ -1,8 +1,8 @@
 <template>
   <ul>
-    <li v-for="item in faqs" class="item">
+    <li v-for="item in faqs" class="item" :id="item.id">
       <Collapse :title="item.title">
-        <p>{{ item.body }}</p>
+        <div v-html="item.body"></div>
       </Collapse>
     </li>
   </ul>
@@ -23,7 +23,6 @@
   @import "~@/assets/style/variables";
 
   .item {
-    max-width: 800px;
     padding: $spacing / 1.5 0;
     border-bottom: 1px solid $color-border-mute;
 

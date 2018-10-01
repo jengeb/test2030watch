@@ -1,6 +1,6 @@
 const routerBase = process.env.DEPLOY_ENV === 'GH_PAGES' ? {
   router: {
-    base: '/test2030watch'
+    base: '/test2030watch/'
   }
 } : {}
 
@@ -10,15 +10,18 @@ module.exports = {
   ** Headers of the page
   */
   head: {
-    title: '2030Watch | Wie nachhaltig ist Deutschland?',
+    htmlAttrs: {
+      lang: 'de'
+    },
+    title: 'Testseite',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '2030Watch diskutiert wie ambitioniert Deutschland die Nachhaltigkeitsziele der Agenda 2030 umsetzt.' }
+      { name: 'robots', content: 'noindex' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.png' },
-      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Chivo:400,700|Roboto+Mono:400,700' }
+      { rel: 'icon', type: 'image/png', href: 'favicon.png' },
+      { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css?family=Chivo:400,700|Roboto+Mono:400,700', defer: true }
     ]
   },
   css: [
@@ -36,7 +39,8 @@ module.exports = {
         return '/sdg/' + data
       })
       return [...indicators, ...sdgs]
-    }
+    },
+    fallback: '404.html'
   },
   /*
   ** Customize the progress bar color
@@ -46,6 +50,8 @@ module.exports = {
   ** Build configuration
   */
   build: {
+    vendor: ['babel-polyfill'],
+    analyze: true,
     /*
     ** Run ESLint on save
     */

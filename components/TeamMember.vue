@@ -1,17 +1,17 @@
 <template>
   <div class="team-member">
     <div class="avatar">
-      <img :src="member.imgUrl" :alt="'Foto von' + member.name" />
+      <img :src="member.imgUrl" :alt="'Foto von ' + member.name" />
     </div>
     <div class="info">
-      <span class="name">{{ member.name }}</span>
-      <span class="role">{{ member.role }}</span>
+      <div class="name">{{ member.name }}</div>
+      <div class="role">{{ member.role }}</div>
       <div class="socials">
         <a v-if="member.email" :href="'mailto:' + member.email">
-          <i class="icon-mail" title="E-Mail Icon" />
+          <i class="icon-mail" title="E-Mail" />
         </a>
         <a v-if="member.twitter" :href="member.twitter" target="_blank">
-          <i class="icon-twitter" title="Twitter Icon" />
+          <i class="icon-twitter" title="Twitter" />
         </a>
       </div>
     </div>
@@ -32,7 +32,6 @@
     align-items: center;
     width: 50%;
     padding-bottom: $spacing * 2;
-    padding-left: $spacing * 2;
 
     .avatar {
       margin-right: 20px;
@@ -50,8 +49,8 @@
       }
 
       .name {
-        color: $color-okf;
-        font-weight: 600;
+        font-weight: bold;
+        font-size: 1.25rem;
       }
 
       .role {
@@ -60,10 +59,17 @@
       }
 
       .socials {
-        img {
-          margin-right: 10px;
+        i {
+          margin-right: 8px;
         }
       }
+    }
+  }
+
+  @media screen and (max-width: $on-palm) {
+    .team-member {
+      width: 100%;
+      padding-bottom: $spacing * 1.5;
     }
   }
 </style>
