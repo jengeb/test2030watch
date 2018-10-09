@@ -12,6 +12,8 @@ branches:
 
 install:
   - npm ci
+
+script:
   - node data/load-data.js
   - mv indiNav.json sdgs.json indicators.json ./data/
   - npm run generate:gh-pages
